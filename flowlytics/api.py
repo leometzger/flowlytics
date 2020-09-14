@@ -1,6 +1,6 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 
-from .database import database
+from .database import database, get_db
 from .modules.ipsets.router import router as ipsets_router
 from .modules.queries.router import router as queries_router
 
@@ -17,5 +17,13 @@ async def shutdown():
     await database.disconnect()
 
 
-router.include_router(ipsets_router, prefix='/ipsets', tags=['ipsets'])
-router.include_router(queries_router, prefix='/queries', tags=['queries'])
+router.include_router(
+    ipsets_router,
+    prefix='/ipsets',
+    tags=['ipsets']
+)
+router.include_router(
+    queries_router,
+    prefix='/queries',
+    tags=['queries']
+)

@@ -27,5 +27,6 @@ class DBQuery(SQLBase):
 
     id = Column("id", Integer, primary_key=True)
     name = Column("name", String)
+    operation = Column("operation", String)
     filters_id = Column(Integer, ForeignKey('filters.id'))
     filters = relationship("DBFilter",  uselist=False, back_populates="query")

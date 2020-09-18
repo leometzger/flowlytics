@@ -23,6 +23,7 @@ class RunQuery(BaseModel):
 class Query(BaseModel):
   id: Optional[int]
   name: str
+  operation: str
   filters: Filters
 
   class Config:

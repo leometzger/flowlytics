@@ -40,11 +40,10 @@ def update_query(id: int, request: UpdateQueryRequest, session: Session= Depends
     if not query:
         raise NotFoundException(detail=f"Query {id} Not Found")
     
-    query = Query(id=id, name=request.name, filters=query.filters)
     return services.update(db=session, query=query)
 
 
-@router.delete('/{id}')
+@router.delete('/{id}', response_model=Query)
 def delete_query(id: int, session: Session = Depends(get_db)):
     query = services.find_by_id(db=session, id=id)
     if not query:

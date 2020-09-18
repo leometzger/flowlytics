@@ -8,14 +8,13 @@ class IpSet(BaseModel):
     name: str
     ips: List[str]
 
-    def __init__(self, id, name, ips=[]):
-        self.id = id
-        self.name = name
-        self.ips = ips
-
     @property
     def some_duplicated(self):
         return len(set(self.ips)) != len(self.ips)
+
+
+    class Config:
+        orm_mode = True
 
 
 class CreateIpsetRequest(BaseModel):

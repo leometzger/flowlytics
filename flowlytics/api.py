@@ -8,13 +8,13 @@ router = APIRouter()
 
 
 @router.on_event("startup")
-async def startup():
-    await database.connect()
+def startup():
+    pass
 
 
 @router.on_event("shutdown")
-async def shutdown():
-    await database.disconnect()
+def shutdown():
+    pass
 
 
 router.include_router(

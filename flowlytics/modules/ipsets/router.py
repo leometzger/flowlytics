@@ -1,49 +1,56 @@
-from fastapi import APIRouter, Depends
-from flowlytics.database import get_db, FlowlyticsDb
+import flowlytics.modules.ipsets.services as services
+
+from fastapi import APIRouter, Depends, HTTPException
+from flowlytics.database import get_db
+from sqlalchemy.orm import Session
+from typing import List
 
 from .models import IpSet, CreateIpsetRequest, UpdateIpsetRequest
-from .services import get_all
+
 
 router = APIRouter()
 
 
-@router.get('/')
-async def get_ipsets(db: FlowlyticsDb = Depends(get_db)):
-    # result = await get_all(db=db)
-    result = db.ipsets.select()
-    return result.
+@router.get('/', response_model=List[IpSet])
+def get_ipsets(session: Session= Depends(get_db)):
+    ipsets = services.get_all(session)
+    return ipsets
+
 
 
 @router.get('/{id}', response_model=IpSet)
-async def get_ipset(db: FlowlyticsDb = Depends(get_db)):
-    # return find_by_id(id=id)
-    return 200
+def get_ipset(id: int, session: Session = Depends(get_db)):
+    ipset = services.find_by_id(db=session, id=id)
+    if ipset is None:
+        raise HTTPException(404, detail="Ipset Not Found")
+
+    return ipset
 
 
 @router.post('/', response_model=IpSet)
-async def post_ipset(request: CreateIpsetRequest, db: FlowlyticsDb = Depends(get_db)):
-    #ipset = IpSet(*request)
-    # if ipset.some_duplicated:
-    #    return 400, {"message": "Duplicated IP in ipset"}
+def create_ipset(request: CreateIpsetRequest, session: Session = Depends(get_db)):
+    ipset = IpSet(id=None, name=request.name, ips=request.ips)
+    is_duplicated = services.find_by_name(session, ipset.name)
 
-    # return create(ipset=ipset)
-    return 200
+    if is_duplicated is not None:
+        raise HTTPException(409, detail="Duplicated name")
+
+    return services.create(session, ipset)
 
 
 @router.put('/{id}', response_model=IpSet)
-async def put_ipset(db: FlowlyticsDb = Depends(get_db)):
-    # if ipset.some_duplicated:
-    #    return 400, {"message": "Duplicated IP in ipset"}
-    # return update(id=id, ipset=ipset, db=db)
-    return 200
+def update_ipset(id: int, request: UpdateIpsetRequest, session: Session= Depends(get_db)):
+    ipset = IpSet(id=id, name=request.name, ips=request.ips)
+
+    return services.update(db=session, ipset=ipset)
 
 
-@router.delete('/{id}', response_model=IpSet)
-async def delete_ipset(db: FlowlyticsDb = Depends(get_db)):
-    #delete(id=id, db=db)
-    return 200
+@router.delete('/{id}')
+def delete_ipset(id: int, session: Session = Depends(get_db)):
+    services.delete(db=session, id=id)
+    return 204
 
 
 @router.post('/{id}/ips')
-async def add_ip(ip: str, db: FlowlyticsDb = Depends(get_db)):
+def add_ip(ip: str, session: Session = Depends(get_db)):
     return 200

@@ -4,12 +4,15 @@ from typing import List, Optional
 
 
 class Filters(BaseModel):
-    start_date: str
-    end_date: str
-    port: int
-    protocol: str
-    source_ip: str
-    destination_ip: str
+  start_date: Optional[str]
+  end_date: Optional[str]
+  port: Optional[int]
+  protocol: Optional[str]
+  source_ip: Optional[str]
+  destination_ip: Optional[str]
+
+  class Config:
+    orm_mode = True
 
 
 class RunQuery(BaseModel):
@@ -18,9 +21,12 @@ class RunQuery(BaseModel):
 
 
 class Query(BaseModel):
-  id: Optional[str]
+  id: Optional[int]
   name: str
   filters: Filters
+
+  class Config:
+    orm_mode = True
 
 
 class CreateQueryRequest(Query):

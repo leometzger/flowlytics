@@ -1,10 +1,10 @@
-from typing import List, Optional
 from ipaddress import IPv4Address
 from pydantic import BaseModel
+from typing import List, Optional
 
 
 class IpSet(BaseModel):
-    id: Optional[str]
+    id: Optional[int]
     name: str
     ips: List[str]
 

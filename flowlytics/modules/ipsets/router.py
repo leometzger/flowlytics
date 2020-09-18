@@ -1,11 +1,12 @@
 import flowlytics.modules.ipsets.services as services
 
+from flowlytics.modules.ipsets.models import IpSet, CreateIpsetRequest, UpdateIpsetRequest
+from flowlytics.common.exceptions import ConflictException, NotFoundException
+
 from fastapi import APIRouter, Depends, HTTPException
 from flowlytics.database import get_db
 from sqlalchemy.orm import Session
 from typing import List
-
-from .models import IpSet, CreateIpsetRequest, UpdateIpsetRequest
 
 
 router = APIRouter()
@@ -13,8 +14,7 @@ router = APIRouter()
 
 @router.get('/', response_model=List[IpSet])
 def get_ipsets(session: Session= Depends(get_db)):
-    ipsets = services.get_all(session)
-    return ipsets
+    return services.get_all(session)
 
 
 
@@ -22,7 +22,7 @@ def get_ipsets(session: Session= Depends(get_db)):
 def get_ipset(id: int, session: Session = Depends(get_db)):
     ipset = services.find_by_id(db=session, id=id)
     if ipset is None:
-        raise HTTPException(404, detail="Ipset Not Found")
+        raise NotFoundException(detail=f"Ipset {id} Not Found")
 
     return ipset
 
@@ -33,24 +33,26 @@ def create_ipset(request: CreateIpsetRequest, session: Session = Depends(get_db)
     is_duplicated = services.find_by_name(session, ipset.name)
 
     if is_duplicated is not None:
-        raise HTTPException(409, detail="Duplicated name")
+        raise ConflictException(detail="Duplicated name")
 
     return services.create(session, ipset)
 
 
 @router.put('/{id}', response_model=IpSet)
 def update_ipset(id: int, request: UpdateIpsetRequest, session: Session= Depends(get_db)):
+    ipset = services.find_by_id(db=session, id=id)
+    if not ipset:
+        raise NotFoundException(detail=f"Ipset {id} Not Found")
+    
     ipset = IpSet(id=id, name=request.name, ips=request.ips)
-
     return services.update(db=session, ipset=ipset)
 
 
 @router.delete('/{id}')
 def delete_ipset(id: int, session: Session = Depends(get_db)):
-    services.delete(db=session, id=id)
-    return 204
+    ipset = services.find_by_id(db=session, id=id)
+    if not ipset:
+        raise NotFoundException(detail=f"Ipset {id} Not Found")
+    
+    return services.delete(db=session, id=id)
 
-
-@router.post('/{id}/ips')
-def add_ip(ip: str, session: Session = Depends(get_db)):
-    return 200

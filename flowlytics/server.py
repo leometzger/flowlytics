@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from .api import router
+from flowlytics.api import router
 from flowlytics.database import SQLBase, engine
 
 SQLBase.metadata.create_all(engine)

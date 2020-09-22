@@ -1,8 +1,19 @@
 from ipaddress import IPv4Address
 from pydantic import BaseModel
 from typing import List, Optional
+from sqlalchemy import Table, Column, Integer, String, Date, ForeignKey
+from flowlytics.database import SQLBase
 
 
+class DBIpSet(SQLBase):
+    __tablename__ = "ipsets"
+
+    id = Column("id", Integer, primary_key=True)
+    name = Column("name", String)
+    ips = Column("ips", String)
+
+
+# pydantic
 class IpSet(BaseModel):
     id: Optional[int]
     name: str

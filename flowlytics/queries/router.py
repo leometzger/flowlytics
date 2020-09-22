@@ -1,9 +1,9 @@
-import flowlytics.modules.queries.services as services
-
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from typing import List
-from flowlytics.modules.queries.models import Query, CreateQueryRequest, UpdateQueryRequest
+
+import flowlytics.queries.services as services
+from flowlytics.queries.models import Query, CreateQueryRequest, UpdateQueryRequest
 from flowlytics.database import get_db
 from flowlytics.common.exceptions import NotFoundException, ConflictException
 

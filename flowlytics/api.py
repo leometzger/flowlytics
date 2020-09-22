@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends
 
 from flowlytics.database import database, get_db
-from flowlytics.modules.ipsets.router import router as ipsets_router
-from flowlytics.modules.queries.router import router as queries_router
+from flowlytics.ipsets.router import router as ipsets_router
+from flowlytics.queries.router import router as queries_router
 
 router = APIRouter()
 

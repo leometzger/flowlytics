@@ -1,6 +1,5 @@
 from sqlalchemy.orm import Session
-from flowlytics.database.tables import DBQuery, DBFilter
-from flowlytics.modules.queries.models import Query
+from flowlytics.queries.models import Query, DBQuery, DBFilter
 from typing import List
 
 

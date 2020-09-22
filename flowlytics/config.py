@@ -8,6 +8,8 @@ DEBUG = os.getenv("ENVIRONEMENT") == "DEV"
 HOST = os.getenv("APPLICATION_HOST")
 PORT = int(os.getenv("APPLICATION_PORT", "3000"))
 
+DATABASE_URL = "sqlite:///./test.db"
+
 logging.basicConfig(
     filename=os.getenv("SERVICE_LOG", "server.log") if not DEBUG else None,
     level=logging.DEBUG,

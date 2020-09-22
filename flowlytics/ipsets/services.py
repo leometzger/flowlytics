@@ -1,7 +1,5 @@
 from sqlalchemy.orm import Session
-from flowlytics.database.tables import DBIpSet
-
-from .models import IpSet
+from flowlytics.ipsets.models import DBIpSet, IpSet
 
 SEPARATOR = ':'
 

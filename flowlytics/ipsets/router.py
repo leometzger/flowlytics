@@ -1,10 +1,9 @@
-import flowlytics.modules.ipsets.services as services
-
-from flowlytics.modules.ipsets.models import IpSet, CreateIpsetRequest, UpdateIpsetRequest
+import flowlytics.ipsets.services as services
+from flowlytics.ipsets.models import IpSet, CreateIpsetRequest, UpdateIpsetRequest
 from flowlytics.common.exceptions import ConflictException, NotFoundException
+from flowlytics.database import get_db
 
 from fastapi import APIRouter, Depends, HTTPException
-from flowlytics.database import get_db
 from sqlalchemy.orm import Session
 from typing import List
 

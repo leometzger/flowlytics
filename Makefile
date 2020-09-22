@@ -7,4 +7,5 @@ run.dev:
 
 
 test:
+	rm -f ./test.db
 	pytest tests/

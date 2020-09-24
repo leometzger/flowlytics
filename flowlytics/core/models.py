@@ -36,32 +36,3 @@ class Filters:
     self.destination_ip = destination_ip
     self.sensor = sensor
     self.input_file = input_file
-
-
-class Field(Enum):
-   S_IP=1
-   D_IP=2
-   S_PORT=3
-   D_PORT = 4
-   PROTO = 5
-   PACKETS = 6
-   BYTES = 7
-   FLAGS = 8
-   S_TIME= 9
-   DURATION = 10
-   E_TIME = 11
-   SENSOR = 12
-   IN = 13
-   OUT = 14
-   NH_IP = 15
-   S_TYPE = 16
-   D_TYPE = 16
-   SCC = 18
-   DCC = 19
-   CLASS = 20
-   TYPE = 21
-   ICMP_TYPE = 25
-   INITIAL_FLAGS = 26
-   SESSION_FLAGS = 27
-   ATTRIBUTTES = 28
-   APPLICATION = 29

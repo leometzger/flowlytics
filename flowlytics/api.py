@@ -3,6 +3,7 @@ from fastapi import APIRouter, Depends
 from flowlytics.database import database, get_db
 from flowlytics.ipsets.router import router as ipsets_router
 from flowlytics.queries.router import router as queries_router
+from flowlytics.sensors.router import router as sensors_router
 
 router = APIRouter()
 
@@ -26,4 +27,9 @@ router.include_router(
     queries_router,
     prefix='/queries',
     tags=['queries']
+)
+router.include_router(
+    sensors_router,
+    prefix='/sensors',
+    tags=['sensors']
 )

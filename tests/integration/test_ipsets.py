@@ -1,5 +1,22 @@
 import pytest
+
 from flowlytics.ipsets.models import IpSet
+from flowlytics.ipsets.models import CreateIpsetRequest, UpdateIpsetRequest, IpSet
+
+@pytest.fixture
+def ipset():
+  return IpSet(id=1, name="testing", ips=['192.168.10.10', '192.168.10.2'])
+
+
+@pytest.fixture
+def ipset_in():
+  return CreateIpsetRequest(name="testing", ips=['192.168.10.10', '192.168.10.2'])
+
+
+@pytest.fixture
+def ipset_update():
+  return UpdateIpsetRequest(id=1, name="testingv2", ips=['192.168.10.11', '192.168.10.3'])
+
 
 def test_create_ipset(client, ipset, ipset_in):
   response = client.post('/api/ipsets/', json=ipset_in.dict())

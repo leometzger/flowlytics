@@ -1,5 +1,28 @@
 import pytest
+
 from flowlytics.queries.models import Query
+from flowlytics.queries.models import CreateQueryRequest, Query, Filters, UpdateQueryRequest
+
+@pytest.fixture
+def filters():
+  return Filters(port=80, protocol="tcp")
+
+
+@pytest.fixture
+def query(filters):
+  return Query(id=1, name="testing_query", operation="test", filters=filters)
+
+
+@pytest.fixture
+def query_in(filters):
+    return CreateQueryRequest(name="testing_query", operation="test", filters=filters)
+
+
+@pytest.fixture
+def query_update(filters):
+    return UpdateQueryRequest(id=1, name="testing_queryv2", filters=filters)
+
+
 
 def test_create_query(client, query, query_in):
   response = client.post('/api/queries/', json=query_in.dict())
